@@ -1,0 +1,15 @@
+.card {
+  background: #282828;
+  border-radius: 8px;
+  display: flex;
+  padding: 1.5%;
+}
+
+.cardbox {
+  display: flex;
+
+  padding: 1.5%;
+  gap: 25px;
+  /* text-align: center; */
+  /* align-items: ; */
+}
