@@ -24,7 +24,7 @@ class BaseService {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          // Authorization: "JWT ".concat(body.access_token),
+          Authorization: "JWT ".concat(localStorage.getItem("access_token")),
         },
       });
 
@@ -42,13 +42,11 @@ class BaseService {
   static async post(body, url) {
     let response;
 
-    // const body = JSON.stringify(data.label);
-
     const config = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        // Authorization: "JWT ".concat(body.access_token),
+        Authorization: "JWT ".concat(body.access_token),
       },
     };
 
@@ -58,7 +56,7 @@ class BaseService {
       const res = await axios.post(url, body, config);
 
       console.log(res);
-      if (res.status === 200) {
+      if (res.status == 200 || res.status == 201) {
         response = Response(res);
       }
     } catch (error) {

@@ -44,14 +44,14 @@ const LoginPage = () => {
       .then((res) => {
         console.log(res);
 
-        if (res.status === 200) {
+        if (res.status === 201) {
           localStorage.setItem("access_token", res.data.idToken);
           //localStorage.setItem("refresh_token", res.data.refresh_token);
           localStorage.setItem("user", JSON.stringify(res.data));
           setUserLoggedIn(true);
         }
 
-        setResponse(res.data.message);
+        //setResponse(res.data.message);
       })
       .catch((error) => {
         console.log(error);

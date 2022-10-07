@@ -29,25 +29,32 @@ const useStyles = makeStyles({
 
 const Card = (props) => {
   const cardStyle = useStyles(props);
-  const [isHovering, setIsHovering] = useState(false);
 
-  // const handleMouseOver = () => {
-  //   console.log("enter ....");
-  //   setIsHovering(true);
-  //   // props.enter();
-  // };
+  const handleMouseOver = (event) => {
+    if (props.handleMouseOver) {
+      props.handleMouseOver();
+    }
+  };
 
-  // const handleMouseOut = () => {
-  //   console.log("exit ....");
-  //   setIsHovering(false);
-  //   //props.exit();
-  // };
+  const handleMouseOut = (event) => {
+    if (props.handleMouseOver) {
+      props.handleMouseOut();
+    }
+  };
+
+  const handleClick = () => {
+    console.log("[clicked]");
+    if (props.handleClick) {
+      props.handleClick();
+    }
+  };
 
   return (
     <div
       className={`${classes.card} ${cardStyle.root}`}
-      // onMouseOver={handleMouseOver}
-      // onMouseOut={handleMouseOut}
+      onClick={handleClick}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
     >
       {props.children}
     </div>

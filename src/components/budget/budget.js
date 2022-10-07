@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../UI/card";
 import Label from "../UI/label";
 
-const Budget = () => {
+const Budget = (props) => {
   return (
     <Card
       width="15%"
@@ -16,11 +16,11 @@ const Budget = () => {
         <Label color="white">Available Budget</Label>
       </Typography>
       <Typography variant="h4">
-        <Label color={"lightgreen"}>${6000}</Label>
+        <Label color={"lightgreen"}>${props.available}</Label>
       </Typography>
       <Typography variant="subtitle1">
         <Label color={"lightblue"}>Original &nbsp;</Label>
-        <Label color={"grey"}> ${6000}</Label>
+        <Label color={"grey"}> ${props.assigned}</Label>
       </Typography>
     </Card>
   );
