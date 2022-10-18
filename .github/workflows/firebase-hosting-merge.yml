@@ -17,6 +17,8 @@ jobs:
       - run: npm install
       - run: npm install caniuse-lite@1.0.30001397
       - run: npm run build --if-present
+        env:
+          CI: false
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
