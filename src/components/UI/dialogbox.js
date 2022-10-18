@@ -1,9 +1,7 @@
-import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   makeStyles,
@@ -36,24 +34,17 @@ const theme = createTheme({
 const DialogBox = (props) => {
   const dialogboxStyle = useStyles(props);
 
-  const handleClose = (event, reason) => {
-    // if (reason !== "backdropClick") {
-    //   onClose(event, reason);
-    // }
-    props.closeDialog();
-  };
-
-  const submit = () => {
-    console.log("[form submitted]");
-  };
+  // const handleClose = () => {
+  //   props.closeDialog();
+  // };
 
   return (
     <MuiThemeProvider theme={theme}>
       <Dialog
         open={props.open}
         onClose={(event, reason) => {
-          if (reason !== "backdropClick") {
-            handleClose(event, reason);
+          if (props.onClose) {
+            props.onClose(event, reason);
           }
         }}
         className={dialogboxStyle.root}
@@ -61,17 +52,45 @@ const DialogBox = (props) => {
         <DialogTitle id="responsive-dialog-title">
           <Label color="white">{props.title}</Label>
         </DialogTitle>
-        <DialogContent>{props.children}</DialogContent>
-        {props.saveCancelDialog && (
-          <DialogActions style={{ padding: "4.3%" }}>
-            <Button onClick={handleClose} color="primary" variant="contained">
-              Cancel
-            </Button>
-            <Button onClick={props.submit} color="primary" variant="contained">
-              Add
-            </Button>
-          </DialogActions>
-        )}
+        <form onSubmit={props.submit}>
+          <DialogContent>{props.children}</DialogContent>
+          <div style={{ flexDirection: "row", display: "flex", gap: "15%" }}>
+            {props.delete && (
+              <DialogActions style={{ padding: "4.3%" }}>
+                <Button
+                  // type="submit"
+                  onClick={() => {
+                    props.onDelete();
+                    props.closeDialog();
+                  }}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            )}
+            {props.saveCancelDialog && (
+              <DialogActions style={{ padding: "4.3%" }}>
+                <Button
+                  onClick={props.closeDialog}
+                  color="primary"
+                  variant="contained"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  // onClick={props.submit}
+                  color="primary"
+                  variant="contained"
+                >
+                  Submit
+                </Button>
+              </DialogActions>
+            )}
+          </div>
+        </form>
       </Dialog>
     </MuiThemeProvider>
   );

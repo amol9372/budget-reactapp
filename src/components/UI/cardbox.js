@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     padding: (props) => (props.padding ? props.padding : "1.5%"),
     //maxWidth: (props) => (props.maxWidth ? props.maxWidth : "60%"),
     width: (props) => (props.width ? props.width : "60%"),
+    flexWrap: "wrap",
   },
 });
 

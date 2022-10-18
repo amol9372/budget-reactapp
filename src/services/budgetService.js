@@ -9,10 +9,14 @@ export const errorResponse = (error) => {
 };
 
 class BudgetService extends BaseService {
-  static async fetchBudgetDetails(budgetId) {}
+  static async fetchBudgetDetails(budgetId) {
+    return BaseService.get(null, "/budget/".concat(budgetId));
+  }
 
   static async createBudget(budget) {
-    return BaseService.post(budget, "/budget");
+    const user = JSON.parse(localStorage.getItem("user"));
+    const body = { ...budget, userId: user.userId, currency: "CAD" };
+    return BaseService.post(body, "/budget");
   }
 
   static async fetchAllBudgets() {

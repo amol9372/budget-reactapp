@@ -6,7 +6,8 @@ const Label = (props) => {
       style={{
         color: props.color,
         fontSize: props.font,
-        // background: "lightgrey",
+        background: (props) => props.background,
+
         // padding: "6px",
         // margin: "3px",
       }}

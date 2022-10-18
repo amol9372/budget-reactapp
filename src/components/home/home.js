@@ -6,11 +6,11 @@ import BudgetService from "../../services/budgetService";
 import AllBudgets from "../budget/allbudgets";
 import Budget from "../budget/budget";
 import CategoryView from "../category/categoriesView";
+import HeaderBar from "../header/appBar";
 import Label from "../UI/label";
 
 const Home = () => {
   const [authRequired, setAuthRequired] = useState(false);
-  const [hasBudgets, setHasBudgets] = useState(false);
   const [budgets, setBudgets] = useState();
 
   useEffect(() => {
@@ -33,7 +33,6 @@ const Home = () => {
         if (res.status === 200) {
           if (res.data.length > 0) {
             setBudgets(res.data);
-            setHasBudgets(true);
           }
         }
       })
@@ -45,25 +44,12 @@ const Home = () => {
   return (
     <div>
       {authRequired && <Redirect to="/login" />}
-      {/* {hasBudgets && ( */}
       <>
+        <HeaderBar />
         <AllBudgets budgets={budgets} />
       </>
-      {/* )} */}
     </div>
   );
-  //   } else {
-  //     return (
-  //       <div>
-  //         {authRequired && <Redirect to="/login" />}
-  //         <>
-  //           <Typography variant="h3">
-  //             <Label color="white">{"Please create a budget"}</Label>
-  //           </Typography>
-  //         </>
-  //       </div>
-  //     );
-  //   }
 };
 
 export default Home;

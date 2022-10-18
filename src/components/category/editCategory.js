@@ -2,53 +2,24 @@ import React, { useState } from "react";
 import Card from "../UI/card";
 import DialogBox from "../UI/dialogbox";
 import InputField from "../UI/inputfield";
-// import CustomIconDropdown from "../dropdown/icondropdown";
-import { Switch } from "@material-ui/core";
-import Label from "../UI/label";
 import { trackPromise } from "react-promise-tracker";
-import CategoryService from "../../services/catgoryService";
+import CategoryBudgetService from "../../services/catgoryService";
+import { Checkbox, FormControlLabel } from "@material-ui/core";
 
 const attribute = {
-  id: NaN,
+  id: "",
   name: "",
-  allocated: NaN,
+  allocation: 0.0,
   error: false,
   default: false,
 };
 
 const EditCatgory = (props) => {
-  const [bcategory, setBCategory] = useState(attribute);
+  const [bcategory, setBCategory] = useState(props.category);
 
   const handleClose = () => {
-    setBCategory(attribute);
+    setBCategory(props.category);
     props.closeDialog();
-  };
-
-  const bcategoryNameChangeHandler = (event) => {
-    const input = event.target.value;
-
-    if (
-      props.existingBCategories &&
-      props.existingBCategories.includes(input.trim())
-    ) {
-      bcategory.error = true;
-      bcategory.validation = "Category name already exists";
-      bcategory.name = input;
-      setBCategory((prevbCategory) => ({
-        ...prevbCategory,
-        error: true,
-        validation: "Category name already exists",
-        name: input,
-      }));
-      return;
-    }
-
-    setBCategory((prevbCategory) => ({
-      ...prevbCategory,
-      name: input,
-      error: false,
-      validation: "",
-    }));
   };
 
   const bcategoryAllocationChangeHandler = (event) => {
@@ -62,28 +33,51 @@ const EditCatgory = (props) => {
     }));
   };
 
-  const bCategorySubmit = () => {
+  const bCategorySubmit = (event) => {
+    event.preventDefault();
+    console.log(event);
+    //validations()
     console.log("[BCatgory form submit]", bcategory);
     //bcategory.primary_user = true;
 
-    const requestBody = {
-      //access_token: localStorage.getItem("access_token"),
-      bcategory: bcategory,
-    };
-
-    const response = trackPromise(CategoryService.upsertCategory(requestBody));
+    const response = trackPromise(
+      CategoryBudgetService.upsertCategory(bcategory)
+    );
 
     response.then((res) => {
-      if (res.status === 401) {
-        localStorage.clear();
-        return;
-      } else if (res.status === 200) {
+      if (res.status === 200) {
         bcategory.id = res.data.id;
         setBCategory(bcategory);
+      } else {
+        console.log("Error while editing Budget category ::: ", res);
       }
     });
 
     props.updateCategoriesOnSuccess(bcategory);
+  };
+
+  const validations = () => {
+    if (bcategory.allocated === "") {
+      bcategory.validation = "Allocation amount cannot be empty";
+      return;
+    }
+  };
+
+  const deleteCategory = (event) => {
+    //event.preventDefault();
+
+    const response = trackPromise(
+      CategoryBudgetService.deleteCategory(bcategory.id)
+    );
+
+    response.then((res) => {
+      if (res.status === 200) {
+      } else {
+        console.log("Error while deleting Budget category ::: ", res);
+      }
+    });
+
+    props.updateCategoriesOnSuccess(null);
   };
 
   return (
@@ -92,21 +86,22 @@ const EditCatgory = (props) => {
       closeDialog={handleClose}
       title="Edit Budget Category"
       saveCancelDialog={true}
+      delete={bcategory.userDefined}
       submit={bCategorySubmit}
+      onDelete={deleteCategory}
     >
       <Card width="90%" padding="2.5%" maxWidth="90%">
         <InputField
-          //size="medium"
           label="Category Name"
           type="text"
           value={bcategory.name}
-          onchange={bcategoryNameChangeHandler}
+          // onchange={bcategoryNameChangeHandler}
           error={bcategory.error}
-          validationText={bcategory.validation}
+          // validationText={bcategory.validation}
           required={true}
+          readOnly={true}
         />
         <InputField
-          //size="medium"
           label="Allocation"
           type="number"
           value={bcategory.allocated}
@@ -114,6 +109,32 @@ const EditCatgory = (props) => {
           error={bcategory.error}
           validationText={bcategory.validation}
           required={true}
+        />
+        <FormControlLabel
+          value="autoDeduct"
+          control={
+            <Checkbox
+              color="primary"
+              //onChange={handleAutoDetect}
+              checked={bcategory.autoDeduct}
+            />
+          }
+          label="Auto Deduct"
+          labelPlacement="end"
+          //disabled={true}
+        />
+        <FormControlLabel
+          value="userDefined"
+          control={
+            <Checkbox
+              color="primary"
+              // onChange={handleAutoDetect}
+              checked={bcategory.userDefined}
+            />
+          }
+          label="User Defined"
+          labelPlacement="end"
+          // disabled={true}
         />
       </Card>
     </DialogBox>

@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "../UI/card";
 import Label from "../UI/label";
 
@@ -13,7 +13,7 @@ const Budget = (props) => {
       padding="0.5%"
     >
       <Typography variant="h6">
-        <Label color="white">Available Budget</Label>
+        <Label color="white">{props.name}</Label>
       </Typography>
       <Typography variant="h4">
         <Label color={"lightgreen"}>${props.available}</Label>

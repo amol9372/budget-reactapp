@@ -18,6 +18,7 @@ const useStyles = makeStyles({
     marginRight: (props) => props.marginRight,
     marginLeft: (props) => props.marginLeft,
     height: (props) => props.height,
+    lineHeight: (props) => props.height,
     alignItems: (props) => (props.alignItems ? props.alignItems : "center"),
     textAlign: (props) => (props.textAlign ? props.textAlign : "center"),
     maxWidth: (props) => (props.maxWidth ? props.maxWidth : "45%"),
@@ -43,7 +44,6 @@ const Card = (props) => {
   };
 
   const handleClick = () => {
-    console.log("[clicked]");
     if (props.handleClick) {
       props.handleClick();
     }

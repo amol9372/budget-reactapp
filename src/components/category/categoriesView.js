@@ -1,74 +1,129 @@
-import { Button, IconButton, makeStyles } from "@material-ui/core";
-import { CategoryRounded, Edit } from "@material-ui/icons";
+import { Button, Divider, makeStyles, Typography } from "@material-ui/core";
+import { CategoryRounded } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
+import { trackPromise } from "react-promise-tracker";
+import { useHistory } from "react-router-dom";
+import CategoryBudgetService from "../../services/catgoryService";
 import CardBox from "../UI/cardbox";
 import CategoryCard from "./categoryCard";
-import EditCatgory from "./editCategory";
-import { sampleBudgetCategories } from "./test-budgetCategory";
+import AddCategory from "./addCategory";
+import Label from "../UI/label";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  categoryType: {
+    marginLeft: "7%",
+    display: "flex",
+    flex: "2 1 auto",
+    flexWrap: "wrap",
+    alignSelf: "flex-start",
+  },
 }));
 
-const CategoryView = () => {
+const CategoryView = (props) => {
+  const history = useHistory();
   const classes = useStyles();
   const [categories, setCategories] = useState([
     {
       id: 0,
       name: "",
+      userDefined: false,
       allocated: 0.0,
-      available: 0.0,
+      used: 0.0,
+      budgetId: 0,
+      autoDeduct: true,
+      autoDeductOn: "",
     },
   ]);
-
-  useEffect(() => {
-    setCategories(sampleBudgetCategories);
-  }, [categories]);
-
-  const [open, setOpen] = React.useState(true);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const closeDialog = () => {
     setDialogOpen(false);
   };
 
-  const updateCategory = (categoryNew) => {
-    const categoriesClone = categories.map((item) => {
-      const categoryClone = { ...item };
-      return categoryClone;
-    });
+  useEffect(() => {
+    getBudgetCategories(props.budgetId);
+    //setCategories(sampleBudgetCategories);
+  }, []);
 
-    categoriesClone.push(categoryNew);
-    setCategories(categoriesClone);
+  const getBudgetCategories = (budgetId) => {
+    const response = trackPromise(
+      CategoryBudgetService.getCategories(budgetId)
+    );
+
+    response
+      .then((res) => {
+        console.log(res);
+
+        if (res.status === 200) {
+          if (res.data.length > 0) {
+            setCategories(res.data);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const updateCategory = (categoryNew) => {
+    history.go();
+  };
+
+  const addCategory = (bcategory) => {
     setDialogOpen(false);
+    history.go();
+  };
+
+  const deleteCategory = () => {
+    history.go();
   };
 
   return (
-    <CardBox width="60%">
-      {categories.map((item) => {
-        return (
-          <div style={{ width: "80%", display: "flex" }}>
-            <CategoryCard
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              allocated={item.allocated}
-              available={item.available}
-            />
+    <CardBox width="50%">
+      {/* <Divider /> */}
+      <div className={classes.categoryType}>
+        <Typography variant="body2">
+          <Label color="lightgrey">{"SYSTEM"}</Label>
+        </Typography>
+      </div>
 
-            <IconButton size="medium" onClick={() => setDialogOpen(true)}>
-              <Edit color="primary" />
-              <EditCatgory
-                open={dialogOpen}
-                closeDialog={closeDialog}
-                existingCategories={categories.map((cat) => cat.name)}
-                updateCategoriesOnSuccess={updateCategory}
+      {categories.map((item) => {
+        if (!item.userDefined) {
+          return (
+            <div style={{ width: "80%", display: "flex" }}>
+              <CategoryCard
+                item={item}
+                key={item.id}
+                id={item.id}
+                updateCategory={updateCategory}
               />
-            </IconButton>
-          </div>
-        );
+            </div>
+          );
+        }
+      })}
+
+      <div className={classes.categoryType}>
+        <Typography variant="body2">
+          <Label color="lightgrey">{"USER DEFINED"}</Label>
+        </Typography>
+      </div>
+
+      {categories.map((item) => {
+        if (item.userDefined) {
+          return (
+            <div style={{ width: "80%", display: "flex" }}>
+              <CategoryCard
+                item={item}
+                key={item.id}
+                id={item.id}
+                updateCategory={updateCategory}
+              />
+            </div>
+          );
+        }
       })}
       <Button
         variant="contained"
@@ -79,6 +134,14 @@ const CategoryView = () => {
       >
         Add Category
       </Button>
+
+      <AddCategory
+        // category={item}
+        open={dialogOpen}
+        closeDialog={closeDialog}
+        existingCategories={categories.map((cat) => cat.name)}
+        updateCategoriesOnSuccess={addCategory}
+      />
     </CardBox>
   );
 };

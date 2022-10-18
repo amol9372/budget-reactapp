@@ -1,15 +1,24 @@
-import { sampleBudgetCategories } from "../components/category/test-budgetCategory";
 import BaseService from "./baseService";
 
-class CategoryService extends BaseService {
-  static async getCategories(body) {
-    // return BaseService.get(body, "/expense")
-    return sampleBudgetCategories;
+class CategoryBudgetService extends BaseService {
+  static async getCategories(budgetId) {
+    return BaseService.get(null, "/category-budget/".concat(budgetId));
   }
 
-  static async upsertCategory(body) {
-    return BaseService.post(body, "/category");
+  static async upsertCategory(category) {
+    return BaseService.post(category, "/category-budget/".concat(category.id));
+  }
+
+  static async createCategory(category) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const budget = JSON.parse(localStorage.getItem("currentBudget"));
+    const body = { ...category, userId: user.userId, budgetId: budget.id };
+    return BaseService.post(body, "/category-budget/");
+  }
+
+  static async deleteCategory(categoryId) {
+    return BaseService.delete(null, "/category-budget/".concat(categoryId));
   }
 }
 
-export default CategoryService;
+export default CategoryBudgetService;

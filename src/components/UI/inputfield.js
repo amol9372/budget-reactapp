@@ -21,6 +21,9 @@ const useStyles = makeStyles({
     background: "#1f1f1f",
     height: 40,
   },
+  readOnly: (props) => {
+    return props.readOnly ? props.readOnly : false;
+  },
 
   size: {
     width: (props) => {
@@ -51,7 +54,10 @@ const InputField = (props) => {
       className={`${inputFieldStyle.root} ${inputFieldStyle.size}`}
       InputProps={{
         className: inputFieldStyle.inputProps,
+        readOnly: props.readOnly,
+        inputProps: { min: 0 },
       }}
+      disabled={props.disabled ? props.disabled : false}
     />
   );
 };
