@@ -163,7 +163,8 @@ const HeaderBar = () => {
   );
 
   const username = () => {
-    return JSON.parse(localStorage.getItem("user")).displayName;
+   // return JSON.parse(localStorage.getItem("user")).displayName;
+   return "Amol";
   };
 
   return (
