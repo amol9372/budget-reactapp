@@ -1,10 +1,10 @@
 import { makeStyles, Typography } from "@material-ui/core";
+import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import Card from "../UI/card";
 import Label from "../UI/label";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import EditCatgory from "./editCategory";
 
 const useStyles = makeStyles({

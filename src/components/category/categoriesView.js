@@ -1,13 +1,13 @@
-import { Button, Divider, makeStyles, Typography } from "@material-ui/core";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import { CategoryRounded } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { trackPromise } from "react-promise-tracker";
 import { useHistory } from "react-router-dom";
 import CategoryBudgetService from "../../services/catgoryService";
 import CardBox from "../UI/cardbox";
-import CategoryCard from "./categoryCard";
-import AddCategory from "./addCategory";
 import Label from "../UI/label";
+import AddCategory from "./addCategory";
+import CategoryCard from "./categoryCard";
 
 const useStyles = makeStyles((theme) => ({
   button: {

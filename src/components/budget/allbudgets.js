@@ -1,18 +1,10 @@
-import { Button, IconButton, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { Button, Typography } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Card from "../UI/card";
 import CardBox from "../UI/cardbox";
 import Label from "../UI/label";
-import {
-  Add,
-  AddCircleOutlineSharp,
-  Delete,
-  DeleteForever,
-  Edit,
-} from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
-import BudgetService from "../../services/budgetService";
-import EditCatgory from "../category/editCategory";
 import CreateEditBudget from "./createEditBudget";
 
 const AllBudgets = (props) => {
@@ -59,16 +51,13 @@ const AllBudgets = (props) => {
 
 const BudgetCard = (props) => {
   const [bg, setBg] = useState();
-  const [deleteBudget, setDeleteBudget] = useState(false);
   const history = useHistory();
 
   const changeBackGround = () => {
     setBg("#292848");
-    setDeleteBudget(true);
   };
 
   const revertBackGround = () => {
-    setDeleteBudget(false);
     setBg("#282828");
   };
 

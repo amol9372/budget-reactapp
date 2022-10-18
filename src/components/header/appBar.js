@@ -1,19 +1,17 @@
-import React from "react";
-import { alpha, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
-import MenuItem from "@material-ui/core/MenuItem";
+import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
+import MenuItem from "@material-ui/core/MenuItem";
+import { alpha, makeStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import React from "react";
 import Label from "../UI/label";
 
 const useStyles = makeStyles((theme) => ({
@@ -163,8 +161,8 @@ const HeaderBar = () => {
   );
 
   const username = () => {
-   // return JSON.parse(localStorage.getItem("user")).displayName;
-   return "Amol";
+    // return JSON.parse(localStorage.getItem("user")).displayName;
+    return "Amol";
   };
 
   return (

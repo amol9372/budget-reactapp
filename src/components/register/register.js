@@ -1,16 +1,15 @@
-import Divider from "@material-ui/core/Divider";
-import CircularProgress from "@material-ui/core/CircularProgress";
-// import GoogleLoginButton from "./../social-login/GoogleLoginButton";
-import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router";
-import Card from "../UI/card";
-import MyButton from "../UI/button";
-import InputField from "../UI/inputfield";
-import axios from "axios";
-import CardBox from "../UI/cardbox";
-import Label from "../UI/label";
 import { Link } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { Redirect } from "react-router";
+import MyButton from "../UI/button";
+import Card from "../UI/card";
+import CardBox from "../UI/cardbox";
+import InputField from "../UI/inputfield";
+import Label from "../UI/label";
 
 axios.defaults.headers.common["X-Requested-With"] = "XmlHttpRequest";
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_BASE_URL;

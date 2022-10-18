@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import classes from "../../components/UI/card.module.css";
 import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import classes from "../../components/UI/card.module.css";
 
 const useStyles = makeStyles({
   root: {

@@ -1,14 +1,14 @@
+import { Link } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 // import GoogleLoginButton from "../social-login/GoogleLoginButton";
 import React, { useState } from "react";
-import Card from "../UI/card";
+import { isMobile } from "react-device-detect";
 import MyButton from "../UI/button";
-import InputField from "../UI/inputfield";
+import Card from "../UI/card";
 import CardBox from "../UI/cardbox";
-import { Link } from "@material-ui/core";
+import InputField from "../UI/inputfield";
 import Label from "../UI/label";
 import LoadingIndicator from "../UI/loader";
-import { isMobile } from "react-device-detect";
 
 function LoginBox(props) {
   const userAttribute = {

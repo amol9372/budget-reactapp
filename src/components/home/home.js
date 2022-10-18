@@ -1,13 +1,9 @@
-import { Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { trackPromise } from "react-promise-tracker";
 import { Redirect } from "react-router-dom";
 import BudgetService from "../../services/budgetService";
 import AllBudgets from "../budget/allbudgets";
-import Budget from "../budget/budget";
-import CategoryView from "../category/categoriesView";
 import HeaderBar from "../header/appBar";
-import Label from "../UI/label";
 
 const Home = () => {
   const [authRequired, setAuthRequired] = useState(false);
