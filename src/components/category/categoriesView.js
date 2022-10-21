@@ -8,6 +8,7 @@ import CardBox from "../UI/cardbox";
 import Label from "../UI/label";
 import AddCategory from "./addCategory";
 import CategoryCard from "./categoryCard";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -81,8 +82,32 @@ const CategoryView = (props) => {
     history.go();
   };
 
+  const cardboxWidth = () => {
+    if (isMobile) {
+      return "100%";
+    } else {
+      return "50%";
+    }
+  };
+
+  const cardWidth = () => {
+    if (isMobile) {
+      return "100%";
+    } else {
+      return "80%";
+    }
+  };
+
+  const marginTop = () => {
+    if (isMobile) {
+      return "8%";
+    } else {
+      return "1.7%";
+    }
+  };
+
   return (
-    <CardBox width="50%">
+    <CardBox width={cardboxWidth()} marginTop={marginTop()}>
       {/* <Divider /> */}
       <div className={classes.categoryType}>
         <Typography variant="body2">
@@ -93,7 +118,7 @@ const CategoryView = (props) => {
       {categories.map((item) => {
         if (!item.userDefined) {
           return (
-            <div style={{ width: "80%", display: "flex" }}>
+            <div style={{ width: cardWidth(), display: "flex" }}>
               <CategoryCard
                 item={item}
                 key={item.id}
@@ -114,7 +139,7 @@ const CategoryView = (props) => {
       {categories.map((item) => {
         if (item.userDefined) {
           return (
-            <div style={{ width: "80%", display: "flex" }}>
+            <div style={{ width: cardWidth(), display: "flex" }}>
               <CategoryCard
                 item={item}
                 key={item.id}

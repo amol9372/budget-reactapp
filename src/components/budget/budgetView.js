@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom";
 import { trackPromise } from "react-promise-tracker";
 import BudgetService from "../../services/budgetService";
 import HeaderBar from "../header/appBar";
+import { isMobile } from "react-device-detect";
 
 const BudgetView = () => {
   const history = useHistory();
@@ -86,6 +87,14 @@ const BudgetView = () => {
     );
   };
 
+  const cardWidth = () => {
+    if (isMobile) {
+      return "40%";
+    } else {
+      return "15%";
+    }
+  };
+
   return (
     <>
       {authRequired && <Redirect to="/login" />}
@@ -93,9 +102,9 @@ const BudgetView = () => {
         <>
           <HeaderBar />
           <Card
-            width="15%"
+            width={cardWidth()}
             flexGap="6px"
-            marginTop="4%"
+            marginTop="1%"
             marginLeft="7%"
             padding="0.5%"
           >

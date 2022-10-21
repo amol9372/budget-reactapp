@@ -4,7 +4,9 @@ import Divider from "@material-ui/core/Divider";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { trackPromise } from "react-promise-tracker";
 import { Redirect } from "react-router";
+import UserService from "../../services/userServive";
 import MyButton from "../UI/button";
 import Card from "../UI/card";
 import CardBox from "../UI/cardbox";
@@ -22,7 +24,8 @@ function Register() {
     error: false,
   };
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [name, setName] = useState(userAttribute);
+  const [firstname, setFirstName] = useState(userAttribute);
+  const [lastname, setLastName] = useState(userAttribute);
   const [email, setEmail] = useState(userAttribute);
   const [password, setPassword] = useState(userAttribute);
   const [confirmPassword, setConfirmPassword] = useState(userAttribute);
@@ -30,7 +33,7 @@ function Register() {
   const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("user-signed-in") === "true") {
+    if (localStorage.getItem("user")) {
       console.log("[User Already Signed in]");
       setUserLoggedIn(true);
     } else {
@@ -48,7 +51,8 @@ function Register() {
 
     console.log(
       "[Signup details]",
-      name.value,
+      firstname.value,
+      lastname.value,
       email.value,
       password.value,
       confirmPassword.value
@@ -71,19 +75,36 @@ function Register() {
 
     setShowSpinner(true);
     const data = {
-      name: name.value,
+      firstName: firstname.value,
+      lastName: lastname.value,
       email: email.value,
       password: password.value,
       provider: "Application",
     };
 
-    axios
-      .post("/user/register", data, { withCredentials: true })
+    // axios
+    //   .post("/user/register", data, { withCredentials: true })
+    //   .then((res) => {
+    //     if (res.data.status === 201) {
+    //       setShowSpinner(false);
+    //       setResponse("User created successfully, Redirecting to login ....");
+    //       console.log(res.data);
+    //       setUserLoggedIn(true);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     setShowSpinner(false);
+    //     setResponse(error.message);
+    //     console.log(error.message);
+    //   });
+    const response = trackPromise(UserService.createUser(data));
+
+    response
       .then((res) => {
-        if (res.data.status === 201) {
-          setShowSpinner(false);
+        console.log(res);
+
+        if (res.status === 201 || res === 200) {
           setResponse("User created successfully, Redirecting to login ....");
-          console.log(res.data);
           setUserLoggedIn(true);
         }
       })
@@ -94,8 +115,12 @@ function Register() {
       });
   };
 
-  const nameHandler = (event) => {
-    setName({ value: event.target.value });
+  const firstnameHandler = (event) => {
+    setFirstName({ value: event.target.value });
+  };
+
+  const lastnameHandler = (event) => {
+    setLastName({ value: event.target.value });
   };
 
   const emailHandler = (event) => {
@@ -123,17 +148,18 @@ function Register() {
     if (isMobile) {
       return "80%";
     }
+    return "40%";
   };
 
   return (
     <React.Fragment>
       <form onSubmit={loginFormSubmit}>
-        <CardBox>
-          <Card width="40%">
+        <CardBox width="90%">
+          <Card width={cardWidth()} maxWidth="70%">
             <Label color="hsla(0,0%,100%,.87)" font="25px">
               Register{" "}
             </Label>
-            {userLoggedIn && <Redirect to="/login" />}
+            {userLoggedIn && <Redirect to="/home" />}
             {/* <GoogleLoginButton authResponse={handleAuthResponse} /> */}
 
             <Divider
@@ -142,12 +168,22 @@ function Register() {
             />
 
             <InputField
-              label="Name"
+              label="Firstname"
               type="text"
-              value={name.value}
-              onchange={nameHandler}
-              error={name.error}
-              validationText={name.validation}
+              value={firstname.value}
+              onchange={firstnameHandler}
+              error={firstname.error}
+              validationText={firstname.validation}
+              required={true}
+            />
+
+            <InputField
+              label="Lastname"
+              type="text"
+              value={lastname.value}
+              onchange={lastnameHandler}
+              error={lastname.error}
+              validationText={lastname.validation}
               required={true}
             />
 

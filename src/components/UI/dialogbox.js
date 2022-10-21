@@ -9,17 +9,26 @@ import {
   createTheme,
 } from "@material-ui/core/styles";
 import Label from "./label";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles({
   root: {},
 });
+
+const dialogBoxWidth = () => {
+  if (isMobile) {
+    return "80%";
+  } else {
+    return "30%";
+  }
+};
 
 const theme = createTheme({
   overrides: {
     MuiDialog: {
       paper: {
         //width: "fit-content",
-        width: "30%",
+        width: { dialogBoxWidth },
         borderColor: "#1f1f1f",
         borderStyle: "solid",
         borderWidth: "0.2px",

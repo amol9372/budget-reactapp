@@ -49,17 +49,17 @@ function LoginBox(props) {
 
   const loginCardWidth = () => {
     if (isMobile) {
-      return "70%";
+      return "80%";
     } else {
-      return "100%";
+      return "30%";
     }
   };
 
   return (
     <React.Fragment>
       <form onSubmit={loginFormSubmit}>
-        <CardBox align="center" width="70%">
-          <Card width="30%">
+        <CardBox align="center" width="80%">
+          <Card width={loginCardWidth()} maxWidth="70%">
             <Label color="hsla(0,0%,100%,.87)" font="25px">
               Login{" "}
             </Label>

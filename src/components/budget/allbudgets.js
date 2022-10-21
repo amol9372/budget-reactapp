@@ -6,6 +6,7 @@ import Card from "../UI/card";
 import CardBox from "../UI/cardbox";
 import Label from "../UI/label";
 import CreateEditBudget from "./createEditBudget";
+import { isMobile } from "react-device-detect";
 
 const AllBudgets = (props) => {
   const history = useHistory();
@@ -20,31 +21,46 @@ const AllBudgets = (props) => {
     history.go(0);
   };
 
+  const existingBudgets = () => {
+    if (props.budgets) {
+      return props.budgets.map((item) => item.name);
+    }
+    return [];
+  };
+
+  const budgetsFlex = () => {
+    if (isMobile) {
+      return "column";
+    } else {
+      return "row";
+    }
+  };
+
   return (
-    <CardBox width="90%" flexDirection="row">
+    <CardBox width={"90%"} flexDirection={budgetsFlex()}>
       {props.budgets &&
         props.budgets.map((budget) => {
           return <BudgetCard budget={budget} id={budget.id} key={budget.id} />;
         })}
-      {props.budgets && (
-        <>
-          <Button
-            onClick={() => setDialogOpen(true)}
-            variant="contained"
-            color="primary"
-            //className={classes.button}
-            startIcon={<Add />}
-          >
-            Create new
-          </Button>
-          <CreateEditBudget
-            open={dialogOpen}
-            closeDialog={closeDialog}
-            existingBudgets={props.budgets.map((item) => item.name)}
-            updateBudgetOnSuccess={updateBudget}
-          />
-        </>
-      )}
+
+      <>
+        <Button
+          onClick={() => setDialogOpen(true)}
+          variant="contained"
+          color="primary"
+          //className={classes.button}
+          startIcon={<Add />}
+        >
+          Create new
+        </Button>
+      </>
+
+      <CreateEditBudget
+        open={dialogOpen}
+        closeDialog={closeDialog}
+        existingBudgets={existingBudgets()}
+        updateBudgetOnSuccess={updateBudget}
+      />
     </CardBox>
   );
 };
@@ -65,10 +81,18 @@ const BudgetCard = (props) => {
     history.push({ pathname: "/budgetview", state: budget });
   };
 
+  const cardWidth = () => {
+    if (isMobile) {
+      return "30%";
+    } else {
+      return "8%";
+    }
+  };
+
   return (
     <Card
-      width="8%"
-      //maxWidth="10%"
+      width={cardWidth()}
+      //maxWidth="13%"
       height="140px"
       flex="1 0 15%"
       handleMouseOver={changeBackGround}

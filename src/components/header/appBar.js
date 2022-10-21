@@ -12,6 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import Label from "../UI/label";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HeaderBar = () => {
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -103,6 +105,12 @@ const HeaderBar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const logoutUser = () => {
+    localStorage.clear();
+    history.replace({ pathname: "/login" });
+    handleMenuClose();
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -115,7 +123,7 @@ const HeaderBar = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={logoutUser}>Logout</MenuItem>
     </Menu>
   );
 
@@ -161,8 +169,10 @@ const HeaderBar = () => {
   );
 
   const username = () => {
-    // return JSON.parse(localStorage.getItem("user")).displayName;
-    return "Amol";
+    if (localStorage.getItem("user")) {
+      return JSON.parse(localStorage.getItem("user")).displayName;
+    }
+    //return JSON.parse(localStorage.getItem("user")).displayName;
   };
 
   return (
