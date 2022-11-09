@@ -28,7 +28,7 @@ const theme = createTheme({
     MuiDialog: {
       paper: {
         //width: "fit-content",
-        width: { dialogBoxWidth },
+        width: dialogBoxWidth(),
         borderColor: "#1f1f1f",
         borderStyle: "solid",
         borderWidth: "0.2px",

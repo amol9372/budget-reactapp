@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
+import { Badge } from "react-bootstrap";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import Card from "../UI/card";
@@ -13,6 +14,7 @@ const useStyles = makeStyles({
     display: "flex",
     flex: "2 1 auto",
     flexWrap: "wrap",
+    gap: "30px",
   },
   circularProgressbar: {
     maxWidth: "60px",
@@ -24,6 +26,9 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: "5px",
+  },
+  subCategory: {
+    margin: "4px",
   },
 });
 
@@ -76,6 +81,7 @@ const CategoryCard = (props) => {
           <Typography variant="h6">
             <Label color="white">{props.item.name}</Label>
           </Typography>
+          <Badge bg="primary">{props.item.subCategory}</Badge>
         </div>
         <div className={categoryItemsStyle.alloacted}>
           <Typography variant="caption">

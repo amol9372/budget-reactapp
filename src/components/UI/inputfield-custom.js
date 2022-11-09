@@ -7,10 +7,10 @@ const medium = "50%";
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: "#1f1f1f",
-    borderRadius: "8px",
-    border: "1px white",
-    background: "#1f1f1f",
+    //backgroundColor: "#1f1f1f",
+    // borderRadius: "8px",
+    // border: "1px white",
+    // background: "#1f1f1f",
     "& .MuiOutlinedInput-input": {
       padding: "10.5px 14px",
     },
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
   inputProps: {
     color: "hsla(0,0%,100%,.77)",
-    background: "#1f1f1f",
+    // background: "#1f1f1f",
     height: 40,
   },
   readOnly: (props) => {
@@ -36,17 +36,18 @@ const useStyles = makeStyles({
   },
 });
 
-const InputField = (props) => {
+const InputFieldCustom = (props) => {
   const inputFieldStyle = useStyles(props);
 
   return (
     <TextField
       // id={props.label}
+      label={props.label}
       required={props.required}
       error={props.error}
       helperText={props.validationText}
       value={props.value}
-      placeholder={props.label}
+      // placeholder={props.label}
       onChange={(e) => props.onchange(e)}
       variant={props.varient ? props.varient : "outlined"}
       fullWidth
@@ -62,4 +63,4 @@ const InputField = (props) => {
   );
 };
 
-export default InputField;
+export default InputFieldCustom;

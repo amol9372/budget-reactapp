@@ -6,6 +6,7 @@ import Register from "./components/register/register";
 import { UserContext } from "./context";
 import LoginPage from "./components/login/loginpage";
 import BudgetView from "./components/budget/budgetView";
+import ExpenseHome from "./components/expenses/expense-home";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={Register} />
             <Route path="/budgetview" component={BudgetView} />
+            <Route path="/expenses" component={ExpenseHome} />
             <Route path="/" component={Home} />
           </Switch>
         </Router>

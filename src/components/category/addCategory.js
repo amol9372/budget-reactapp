@@ -1,4 +1,10 @@
-import { Checkbox, FormControlLabel } from "@material-ui/core";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  makeStyles,
+  Select,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { trackPromise } from "react-promise-tracker";
 import CategoryBudgetService from "../../services/catgoryService";
@@ -12,7 +18,20 @@ const attribute = {
   error: false,
 };
 
+const useStyles = makeStyles((theme) => ({
+  select: {
+    width: "200px",
+    color: "white",
+    colorScheme: "white",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
+
 const AddCategory = (props) => {
+  const classes = useStyles();
   const [bcategory, setBCategory] = useState();
   const [errors, setErrors] = useState([]);
   const [name, setName] = useState({
@@ -30,6 +49,7 @@ const AddCategory = (props) => {
     validation: "",
     error: false,
   });
+  const [category, setCategory] = useState();
 
   const handleClose = () => {
     setBCategory(attribute);
@@ -112,6 +132,18 @@ const AddCategory = (props) => {
     }));
   };
 
+  const handleCategory = (event) => {
+    const input = event.target.value;
+
+    // setCategory((prevbCategory) => ({
+    //   ...prevbCategory,
+    //   category: input,
+    //   error: false,
+    //   validation: "",
+    // }));
+    setCategory(input);
+  };
+
   const bCategorySubmit = (event) => {
     event.preventDefault();
     if (errors.length > 0) {
@@ -121,6 +153,7 @@ const AddCategory = (props) => {
 
     const body = {
       category: name.value,
+      subCategory: category,
       allocated: allocated.value,
       userDefined: true,
       used: 0,
@@ -151,7 +184,7 @@ const AddCategory = (props) => {
       <Card width="90%" padding="2.5%" maxWidth="90%">
         <InputField
           //size="medium"
-          label="Category Name"
+          label="Name"
           type="text"
           value={name.value}
           onchange={bcategoryNameChangeHandler}
@@ -159,6 +192,27 @@ const AddCategory = (props) => {
           validationText={name.validation}
           required={true}
         />
+        <FormControl className={classes.formControl}>
+          {/* <InputLabel htmlFor="age-native-simple">Category</InputLabel> */}
+          <Select
+            native
+            className={classes.select}
+            required={true}
+            defaultValue="general"
+            color="primary"
+            onChange={handleCategory}
+            inputProps={{
+              name: "Category",
+              id: "age-native-simple",
+            }}
+          >
+            <option aria-label="None" value="" />
+            <option value={"general"}>General</option>
+            <option value={"groceries"}>Groceries</option>
+            <option value={"electronics"}>Electronics</option>
+            <option value={"sports"}>Sports</option>
+          </Select>
+        </FormControl>
         <InputField
           //size="medium"
           label="Allocation"
