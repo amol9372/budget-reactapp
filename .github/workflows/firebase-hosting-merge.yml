@@ -16,11 +16,10 @@ jobs:
       with:
         envkey_DEBUG: false
         envkey_SOME_API_KEY: "123456abcdef"
-        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        REACT_APP_SERVER_BASE_URL: "https://backend.budgetapps.org"
-        file_name: .env.production
+        envkey_REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
+        file_name: .env
         fail_on_empty: false
-    - run: cat .env.production 
+    - run: cat .env
         
   build_and_deploy:
     needs: create-envfile
@@ -29,11 +28,11 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      - name: Create env file
-        run: |
-         echo API_ENDPOINT="endpoint" >> .env.production
-         echo REACT_APP_SERVER_BASE_URL="https://backend.budgetapps.org" >> .env.production
-         cat .env.production
+#       - name: Create env file
+#         run: |
+#          echo API_ENDPOINT="endpoint" >> .env.production
+#          echo REACT_APP_SERVER_BASE_URL="https://backend.budgetapps.org" >> .env.production
+#          cat .env.production
          
       - uses: actions/checkout@v2
       - run: npm install
