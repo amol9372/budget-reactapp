@@ -31,9 +31,9 @@ jobs:
     steps:
       - name: Create env file
         run: |
-         echo API_ENDPOINT="endpoint" >> .env
-         echo REACT_APP_SERVER_BASE_URL="https://backend.budgetapps.org" >> .env
-         cat .env
+         echo API_ENDPOINT="endpoint" >> .env.production
+         echo REACT_APP_SERVER_BASE_URL="https://backend.budgetapps.org" >> .env.production
+         cat .env.production
          
       - uses: actions/checkout@v2
       - run: npm install
