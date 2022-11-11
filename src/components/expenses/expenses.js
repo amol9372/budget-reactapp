@@ -12,7 +12,7 @@ const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
-    fontSize: 18,
+    fontSize: 19,
   },
   body: {
     fontSize: 16,
@@ -29,22 +29,10 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
-    maxWidth: "60%",
+    maxWidth: "50%",
   },
   tableRow: {
     "&:hover": {
@@ -53,7 +41,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Expenses = () => {
+const Expenses = (props) => {
   const classes = useStyles();
 
   return (
@@ -64,28 +52,32 @@ const Expenses = () => {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Expense Name</StyledTableCell>
+            <StyledTableCell align="right">Cost&nbsp;($)</StyledTableCell>
+            <StyledTableCell align="right">Category</StyledTableCell>
+            {/* <StyledTableCell align="right">Paid By</StyledTableCell> */}
+            <StyledTableCell align="right">Created Date</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.expenses.map((expense) => (
             <StyledTableRow
               className={classes.tableRow}
-              key={row.name}
+              key={expense.id}
               onClick={(event) => console.log(event)}
               hover={true}
             >
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {expense.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell align="right">{expense.cost}</StyledTableCell>
+              <StyledTableCell align="right">
+                {expense.category}
+              </StyledTableCell>
+              {/* <StyledTableCell align="right">{expense.paidBy}</StyledTableCell> */}
+              <StyledTableCell align="right">
+                {expense.createdOn}
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

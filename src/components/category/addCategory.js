@@ -135,12 +135,6 @@ const AddCategory = (props) => {
   const handleCategory = (event) => {
     const input = event.target.value;
 
-    // setCategory((prevbCategory) => ({
-    //   ...prevbCategory,
-    //   category: input,
-    //   error: false,
-    //   validation: "",
-    // }));
     setCategory(input);
   };
 
