@@ -44,7 +44,7 @@ const LoginPage = () => {
       .then((res) => {
         console.log(res);
 
-        if (res.status === 201) {
+        if (res.status === 200) {
           localStorage.setItem("access_token", res.data.idToken);
           //localStorage.setItem("refresh_token", res.data.refresh_token);
           localStorage.setItem("user", JSON.stringify(res.data));
