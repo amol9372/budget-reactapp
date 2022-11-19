@@ -46,7 +46,7 @@ class BaseService {
       }
 
       if (response.status === 200) {
-        localStorage.setItem("access_token", response.data.idToken);
+        localStorage.setItem("access_token", response.data.id_token);
       } else {
         console.log("Error in updating access_token", response);
       }
