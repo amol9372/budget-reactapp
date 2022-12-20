@@ -70,7 +70,21 @@ const CategoryView = (props) => {
   };
 
   const updateCategory = (categoryNew) => {
-    history.go();
+    console.log("[Updated Category]", categoryNew);
+
+    const categoriesClone = categories.map((cat) => {
+      var catClone;
+      if (cat.id === categoryNew.id) {
+        catClone = { ...categoryNew };
+      } else {
+        catClone = { ...cat };
+      }
+      return catClone;
+    });
+
+    setCategories(categoriesClone);
+
+    // history.go();
   };
 
   const addCategory = (bcategory) => {
@@ -78,15 +92,11 @@ const CategoryView = (props) => {
     history.go();
   };
 
-  const deleteCategory = () => {
-    history.go();
-  };
-
   const cardboxWidth = () => {
     if (isMobile) {
       return "100%";
     } else {
-      return "50%";
+      return "75%";
     }
   };
 
@@ -115,20 +125,22 @@ const CategoryView = (props) => {
         </Typography>
       </div>
 
-      {categories.map((item) => {
-        if (!item.userDefined) {
-          return (
-            <div style={{ width: cardWidth(), display: "flex" }}>
-              <CategoryCard
-                item={item}
-                key={item.id}
-                id={item.id}
-                updateCategory={updateCategory}
-              />
-            </div>
-          );
-        }
-      })}
+      {categories
+        .sort((item1, item2) => item2.lastUpdated - item1.lastUpdated)
+        .map((item) => {
+          if (!item.userDefined) {
+            return (
+              <div style={{ width: cardWidth(), display: "flex" }}>
+                <CategoryCard
+                  item={item}
+                  key={item.id}
+                  id={item.id}
+                  updateCategory={updateCategory}
+                />
+              </div>
+            );
+          }
+        })}
 
       <div className={classes.categoryType}>
         <Typography variant="body2">

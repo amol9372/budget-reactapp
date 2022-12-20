@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
@@ -75,6 +76,15 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     [theme.breakpoints.up("md")]: {
       display: "none",
+    },
+  },
+  button: {
+    margin: "10px",
+    backgroundColor: "#3c52b2",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "#fff",
+      color: "#3c52b2",
     },
   },
 }));
@@ -175,6 +185,12 @@ const HeaderBar = () => {
     //return JSON.parse(localStorage.getItem("user")).displayName;
   };
 
+  const currentBudget = () => {
+    if (localStorage.getItem("currentBudget")) {
+      return JSON.parse(localStorage.getItem("currentBudget")).name;
+    }
+  };
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -190,6 +206,24 @@ const HeaderBar = () => {
           <Typography className={classes.title} variant="h6" noWrap>
             Budget Tracker
           </Typography>
+          <Button
+            type="submit"
+            variant="outlined"
+            color="inherit"
+            className={classes.button}
+            href="/home"
+          >
+            Home
+          </Button>
+          <Button
+            type="submit"
+            variant="outlined"
+            color="inherit"
+            className={classes.button}
+            href="/expenses"
+          >
+            Expenses
+          </Button>
           {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -215,6 +249,16 @@ const HeaderBar = () => {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
+            {currentBudget() && (
+              <Button
+                variant="contained"
+                color="inherit"
+                className={classes.button}
+                href="/budgetview"
+              >
+                {currentBudget()}
+              </Button>
+            )}
             <IconButton
               edge="end"
               aria-label="account of current user"

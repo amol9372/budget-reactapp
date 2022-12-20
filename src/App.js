@@ -7,6 +7,8 @@ import { UserContext } from "./context";
 import LoginPage from "./components/login/loginpage";
 import BudgetView from "./components/budget/budgetView";
 import ExpenseHome from "./components/expenses/expense-home";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -22,6 +24,18 @@ function App() {
             <Route path="/" component={Home} />
           </Switch>
         </Router>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     </UserContext.Provider>
   );

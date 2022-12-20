@@ -23,7 +23,7 @@ class BaseService {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: "JWT ".concat(localStorage.getItem("access_token")),
+          Authorization: localStorage.getItem("access_token"),
         },
       };
 
@@ -79,7 +79,7 @@ class BaseService {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: "JWT ".concat(localStorage.getItem("access_token")),
+          Authorization: localStorage.getItem("access_token"),
         },
       });
 
@@ -104,7 +104,7 @@ class BaseService {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "JWT ".concat(localStorage.getItem("access_token")),
+        Authorization: localStorage.getItem("access_token"),
       },
     };
 
@@ -124,6 +124,36 @@ class BaseService {
     return response;
   }
 
+  static async put(body, url) {
+    if (!PermittedURLs.includes(url)) {
+      await this.checkTokenExpiry(url);
+    }
+    let response;
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("access_token"),
+      },
+    };
+
+    console.log("[Request]", body);
+
+    try {
+      const res = await axios.put(url, body, config);
+
+      console.log(res);
+      if (res.status === 201) {
+        response = Response(res);
+      }
+    } catch (error) {
+      response = errorResponse(error.response);
+    }
+
+    return response;
+  }
+
   static async delete(body, url) {
     if (!PermittedURLs.includes(url)) {
       await this.checkTokenExpiry(url);
@@ -134,7 +164,7 @@ class BaseService {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "JWT ".concat(localStorage.getItem("access_token")),
+        Authorization: localStorage.getItem("access_token"),
       },
     };
 

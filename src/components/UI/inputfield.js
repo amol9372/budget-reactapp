@@ -42,6 +42,7 @@ const InputField = (props) => {
   return (
     <TextField
       // id={props.label}
+      hidden={props.hidden ? true : false}
       required={props.required}
       error={props.error}
       helperText={props.validationText}

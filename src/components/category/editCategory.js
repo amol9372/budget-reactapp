@@ -5,6 +5,7 @@ import CategoryBudgetService from "../../services/catgoryService";
 import Card from "../UI/card";
 import DialogBox from "../UI/dialogbox";
 import InputField from "../UI/inputfield";
+import { toast } from "react-toastify";
 
 const EditCatgory = (props) => {
   const [bcategory, setBCategory] = useState(props.category);
@@ -25,27 +26,25 @@ const EditCatgory = (props) => {
     }));
   };
 
-  const bCategorySubmit = (event) => {
+  const bCategorySubmit = async (event) => {
     event.preventDefault();
     console.log(event);
-    //validations()
     console.log("[BCatgory form submit]", bcategory);
-    //bcategory.primary_user = true;
 
-    const response = trackPromise(
-      CategoryBudgetService.upsertCategory(bcategory)
+    const res = await toast.promise(
+      CategoryBudgetService.upsertCategory(bcategory),
+      {
+        pending: "Promise is pending",
+        success: "Successfully edited Budget Category 👌",
+        error: "Unable to edit Budget Category 🤯",
+      }
     );
 
-    response.then((res) => {
-      if (res.status === 200) {
-        bcategory.id = res.data.id;
-        setBCategory(bcategory);
-      } else {
-        console.log("Error while editing Budget category ::: ", res);
-      }
-    });
-
-    props.updateCategoriesOnSuccess(bcategory);
+    if (res.status === 201) {
+      props.updateCategoriesOnSuccess(res.data);
+    } else {
+      console.log("Error while editing Budget category ::: ", res.message);
+    }
   };
 
   const deleteCategory = () => {
@@ -57,12 +56,11 @@ const EditCatgory = (props) => {
 
     response.then((res) => {
       if (res.status === 200) {
+        props.updateCategoriesOnSuccess(null);
       } else {
-        console.log("Error while deleting Budget category ::: ", res);
+        console.log("Error while deleting Budget category ::: ", res.message);
       }
     });
-
-    props.updateCategoriesOnSuccess(null);
   };
 
   return (

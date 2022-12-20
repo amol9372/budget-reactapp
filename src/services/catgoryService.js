@@ -5,8 +5,16 @@ class CategoryBudgetService extends BaseService {
     return BaseService.get(null, "/category-budget/".concat(budgetId));
   }
 
+  static async getBudgetCategories() {
+    const budget = JSON.parse(localStorage.getItem("currentBudget"));
+    return BaseService.get(
+      null,
+      "/category-budget/categories/".concat(budget.id)
+    );
+  }
+
   static async upsertCategory(category) {
-    return BaseService.post(category, "/category-budget/".concat(category.id));
+    return BaseService.put(category, "/category-budget/".concat(category.id));
   }
 
   static async createCategory(category) {
@@ -14,6 +22,13 @@ class CategoryBudgetService extends BaseService {
     const budget = JSON.parse(localStorage.getItem("currentBudget"));
     const body = { ...category, userId: user.userId, budgetId: budget.id };
     return BaseService.post(body, "/category-budget/");
+  }
+
+  static async createExpenseCategory(category) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const budget = JSON.parse(localStorage.getItem("currentBudget"));
+    const body = { ...category, userId: user.userId, budgetId: budget.id };
+    return BaseService.post(body, "/category-budget/expense-category");
   }
 
   static async deleteCategory(categoryId) {

@@ -9,11 +9,12 @@ import Label from "../UI/label";
 import EditCatgory from "./editCategory";
 
 const useStyles = makeStyles({
-  rent: {
+  name: {
     marginLeft: "10px",
     display: "flex",
-    flex: "2 1 auto",
-    flexWrap: "wrap",
+    // flex: "2 1 auto",
+    flex: "0 0 22%",
+    //flexWrap: "wrap",
     gap: "30px",
   },
   circularProgressbar: {
@@ -22,9 +23,10 @@ const useStyles = makeStyles({
     // marginBlock: "10px",
     fontWeight: "bold",
   },
-  alloacted: {
+  allocated: {
     display: "flex",
     flexDirection: "column",
+    flex: "0 0 8%",
     gap: "5px",
   },
   subCategory: {
@@ -46,13 +48,12 @@ const CategoryCard = (props) => {
   };
 
   const progress = () => {
-    if (props.item.available > 0.0) {
-      const percent =
-        ((props.item.allocated - props.item.available) / props.item.allocated) *
-        100;
-      return Number(percent).toPrecision(2);
-    }
-    return 0;
+    // if (props.item.used > 0.0) {
+    const percent =
+      ((props.item.allocated - props.item.used) / props.item.allocated) * 100;
+    return 100 - Number(percent).toPrecision(2);
+    // }
+    // return 0;
   };
 
   const handleEdit = () => {
@@ -62,6 +63,36 @@ const CategoryCard = (props) => {
 
   const closeDialog = () => {
     setDialogOpen(false);
+  };
+
+  const getAvailableColor = () => {
+    if (props.item.used < 0.0) {
+      return "red";
+    } else if (props.item.used === 0.0) {
+      return "grey";
+    } else {
+      return "lightgreen";
+    }
+  };
+
+  const getAvailableLabel = () => {
+    const color = getAvailableColor();
+    let used = props.item.used;
+    if (color === "red") {
+      used = -props.item.used;
+    }
+    return <Label color={color}>${used}</Label>;
+  };
+
+  const getBadgeColor = () => {
+    if (
+      props.item.subCategory === null ||
+      props.item.subCategory === undefined
+    ) {
+      return "blue";
+    } else {
+      return "grey";
+    }
   };
 
   return (
@@ -77,18 +108,33 @@ const CategoryCard = (props) => {
         handleClick={handleEdit}
         bgcolor={bg}
       >
-        <div className={categoryItemsStyle.rent}>
+        <div className={categoryItemsStyle.name}>
           <Typography variant="h6">
             <Label color="white">{props.item.name}</Label>
           </Typography>
-          <Badge bg="primary">{props.item.subCategory}</Badge>
         </div>
-        <div className={categoryItemsStyle.alloacted}>
+        {/* <Badge bg={getBadgeColor()} style={{ flex: "0 0 10%" }}>
+          {props.item.subCategory ? props.item.subCategory : "essentials"}
+        </Badge> */}
+        {/* <div style={{ flex: "0 0 15%" }}>
+          <Typography variant="subtitle2">
+            <Label
+              color="white"
+              background={getBadgeColor()}
+              borderRadius="100%"
+              padding="7px"
+            >
+              {props.item.subCategory ? props.item.subCategory : "essentials"}
+            </Label>
+          </Typography>
+        </div> */}
+
+        <div className={categoryItemsStyle.allocated}>
           <Typography variant="caption">
             <Label color="rgb(112, 229, 249)">Allocated</Label>
           </Typography>
           <Typography variant="subtitle1">
-            <Label color="white" background="lightgreen">
+            <Label color="white">
               ${props.item.allocated ? props.item.allocated : 0}
             </Label>
           </Typography>
@@ -97,11 +143,7 @@ const CategoryCard = (props) => {
           <Typography variant="caption">
             <Label color="rgb(112, 119, 199)">Available</Label>
           </Typography>
-          <Typography variant="subtitle1">
-            <Label color="white">
-              ${props.item.available ? props.item.available : 0}
-            </Label>
-          </Typography>
+          <Typography variant="subtitle1">{getAvailableLabel()}</Typography>
         </div>
         <div className={categoryItemsStyle.circularProgressbar}>
           <CircularProgressbar
@@ -109,7 +151,9 @@ const CategoryCard = (props) => {
             text={`${progress()}%`}
             styles={buildStyles({
               textSize: "25px",
-              trailColor: "white",
+              trailColor: "lightgrey",
+              pathColor: "green",
+              textColor: "white",
             })}
           />
         </div>

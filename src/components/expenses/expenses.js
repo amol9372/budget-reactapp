@@ -55,7 +55,6 @@ const Expenses = (props) => {
             <StyledTableCell>Expense Name</StyledTableCell>
             <StyledTableCell align="right">Cost&nbsp;($)</StyledTableCell>
             <StyledTableCell align="right">Category</StyledTableCell>
-            {/* <StyledTableCell align="right">Paid By</StyledTableCell> */}
             <StyledTableCell align="right">Created Date</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -76,7 +75,7 @@ const Expenses = (props) => {
               </StyledTableCell>
               {/* <StyledTableCell align="right">{expense.paidBy}</StyledTableCell> */}
               <StyledTableCell align="right">
-                {expense.createdOn}
+                {new Date(expense.createdOn).toLocaleDateString()}
               </StyledTableCell>
             </StyledTableRow>
           ))}
