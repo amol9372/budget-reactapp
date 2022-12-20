@@ -60,11 +60,11 @@ jobs:
           REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          approvers: amol9372
+          #approvers: amol9372
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUDGET_TRACKER_4DE96 }}'
           channelId: live
-          projectId: budget-tracker-4de96          
+          projectId: budget-tracker-prod          
    
        
           
