@@ -37,6 +37,7 @@ jobs:
           REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          target: dev
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUDGET_TRACKER_4DE96 }}'
           channelId: live
@@ -60,7 +61,7 @@ jobs:
           REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          #approvers: amol9372
+          target: prod
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUDGET_TRACKER_4DE96 }}'
           channelId: live
