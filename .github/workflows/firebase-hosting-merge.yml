@@ -7,32 +7,50 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - master
 jobs:
-  create-envfile: 
+#   create-envfile: 
   
-    runs-on: ubuntu-latest
-    steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_DEBUG: false
-        envkey_SOME_API_KEY: "123456abcdef"
-        envkey_REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
-        file_name: .env
-        fail_on_empty: false
-    - run: cat .env
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Make envfile
+#       uses: SpicyPizza/create-envfile@v1.3
+#       with:
+#         envkey_DEBUG: false
+#         envkey_SOME_API_KEY: "123456abcdef"
+#         envkey_REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
+#         file_name: .env
+#         fail_on_empty: false
+#     - run: cat .env
         
   build_and_deploy:
-    needs: create-envfile
     runs-on: ubuntu-latest
+    environment: dev
     strategy:
       matrix:
         node-version: [16.x]
     steps:
-#       - name: Create env file
-#         run: |
-#          echo API_ENDPOINT="endpoint" >> .env.production
-#          echo REACT_APP_SERVER_BASE_URL="https://backend.budgetapps.org" >> .env.production
-#          cat .env.production
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm install caniuse-lite@1.0.30001397
+      - run: npm run build --if-present
+        env:
+          CI: false
+          REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          target: dev
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUDGET_TRACKER_4DE96 }}'
+          channelId: live
+          projectId: budget-tracker-4de96
+          
+  build_and_deploy_prod:
+    needs: build_and_deploy
+    runs-on: ubuntu-latest
+    environment: prod
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
          
       - uses: actions/checkout@v2
       - run: npm install
@@ -43,10 +61,11 @@ jobs:
           REACT_APP_SERVER_BASE_URL: '${{ secrets.REACT_APP_SERVER_BASE_URL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          target: prod
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUDGET_TRACKER_4DE96 }}'
           channelId: live
-          projectId: budget-tracker-4de96
+          projectId: budget-tracker-prod          
    
        
           
