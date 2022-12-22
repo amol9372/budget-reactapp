@@ -113,9 +113,13 @@ const CategoryCard = (props) => {
             <Label color="white">{props.item.name}</Label>
           </Typography>
         </div>
-        {/* <Badge bg={getBadgeColor()} style={{ flex: "0 0 10%" }}>
-          {props.item.subCategory ? props.item.subCategory : "essentials"}
-        </Badge> */}
+        {/* <div>
+          <Badge bg={getBadgeColor()} style={{ flex: "0 0 8%" }}>
+            <h6>
+            {props.item.subCategory ? props.item.subCategory : "essentials"}
+            </h6>
+          </Badge>
+        </div> */}
         {/* <div style={{ flex: "0 0 15%" }}>
           <Typography variant="subtitle2">
             <Label
@@ -150,7 +154,7 @@ const CategoryCard = (props) => {
             value={progress()}
             text={`${progress()}%`}
             styles={buildStyles({
-              textSize: "25px",
+              textSize: "22px",
               trailColor: "lightgrey",
               pathColor: "green",
               textColor: "white",

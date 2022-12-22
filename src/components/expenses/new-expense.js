@@ -50,6 +50,7 @@ const NewExpense = (props) => {
   });
 
   useEffect(() => {
+    // navigator.geolocation.getCurrentPosition();
     getCategories();
   }, []);
 

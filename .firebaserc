@@ -5,12 +5,11 @@
   "targets": {
     "budget-tracker-4de96": {
       "hosting": {
-        "prod": [
-          "budget-tracker-prod",
-          "prod-budget-tracker"
-        ],
         "dev": [
           "dev-budget-tracker"
+        ],
+        "prod": [
+          "prod-budget-tracker"
         ]
       }
     }
