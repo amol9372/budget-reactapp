@@ -9,6 +9,10 @@ import Label from "../UI/label";
 import AddCategory from "./addCategory";
 import CategoryCard from "./categoryCard";
 import { isMobile } from "react-device-detect";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -21,23 +25,24 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     alignSelf: "flex-start",
   },
+  heading: {
+    fontSize: theme.typography.pxToRem(19),
+    fontWeight: theme.typography.fontWeightBold,
+  },
+  accordian: {
+    marginLeft: "1%",
+    // display: "flex",
+    // flex: "2 1 auto",
+    // flexWrap: "wrap",
+    alignSelf: "flex-start",
+    width: "90%",
+  },
 }));
 
 const CategoryView = (props) => {
   const history = useHistory();
   const classes = useStyles();
-  const [categories, setCategories] = useState([
-    {
-      id: 0,
-      name: "",
-      userDefined: false,
-      allocated: 0.0,
-      used: 0.0,
-      budgetId: 0,
-      autoDeduct: true,
-      autoDeductOn: "",
-    },
-  ]);
+  const [categories, setCategories] = useState([]);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const closeDialog = () => {
@@ -72,19 +77,40 @@ const CategoryView = (props) => {
   const updateCategory = (categoryNew) => {
     console.log("[Updated Category]", categoryNew);
 
-    const categoriesClone = categories.map((cat) => {
-      var catClone;
-      if (cat.id === categoryNew.id) {
-        catClone = { ...categoryNew };
+    var catClone = [];
+
+    categories.forEach((cat) => {
+      if (cat.subCategory === categoryNew.subCategory) {
+        var categoryClone = [];
+
+        cat.categoryBudgets.map((catBudget) => {
+          if (catBudget.id === categoryNew.id) {
+            categoryClone.push({ ...categoryNew });
+          } else {
+            categoryClone.push({ ...catBudget });
+          }
+
+          return categoryClone;
+        });
+
+        catClone.push({
+          subCategory: cat.subCategory,
+          categoryBudgets: categoryClone,
+        });
       } else {
-        catClone = { ...cat };
+        catClone.push({
+          subCategory: cat.subCategory,
+          categoryBudgets: cat.categoryBudgets,
+        });
       }
-      return catClone;
+
+      // return catClone;
     });
 
-    setCategories(categoriesClone);
+    console.log(catClone);
+    setCategories(catClone);
 
-    // history.go();
+    // history.go(); // refresh page
   };
 
   const addCategory = (bcategory) => {
@@ -104,7 +130,7 @@ const CategoryView = (props) => {
     if (isMobile) {
       return "100%";
     } else {
-      return "80%";
+      return "95%";
     }
   };
 
@@ -119,49 +145,54 @@ const CategoryView = (props) => {
   return (
     <CardBox width={cardboxWidth()} marginTop={marginTop()}>
       {/* <Divider /> */}
-      <div className={classes.categoryType}>
+      {/* <div className={classes.categoryType}>
         <Typography variant="body2">
           <Label color="lightgrey">{"SYSTEM"}</Label>
         </Typography>
-      </div>
+      </div> */}
 
-      {categories
-        .sort((item1, item2) => item2.lastUpdated - item1.lastUpdated)
-        .map((item) => {
-          if (!item.userDefined) {
-            return (
-              <div style={{ width: cardWidth(), display: "flex" }}>
-                <CategoryCard
-                  item={item}
-                  key={item.id}
-                  id={item.id}
-                  updateCategory={updateCategory}
-                />
-              </div>
-            );
-          }
-        })}
+      {categories.length > 1 &&
+        categories.map((cat) => {
+          const sub = cat.subCategory;
+          const categoryBudgets = cat.categoryBudgets;
 
-      <div className={classes.categoryType}>
-        <Typography variant="body2">
-          <Label color="lightgrey">{"USER DEFINED"}</Label>
-        </Typography>
-      </div>
-
-      {categories.map((item) => {
-        if (item.userDefined) {
           return (
-            <div style={{ width: cardWidth(), display: "flex" }}>
-              <CategoryCard
-                item={item}
-                key={item.id}
-                id={item.id}
-                updateCategory={updateCategory}
-              />
+            <div className={classes.accordian}>
+              <Accordion
+                style={{ background: "rgb(48, 47, 47)", color: "white" }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>{sub}</Typography>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    flexDirection: "column",
+                    display: "flex",
+                    gap: "10px",
+                  }}
+                >
+                  {categoryBudgets.map((item) => {
+                    return (
+                      <div style={{ width: cardWidth(), display: "flex" }}>
+                        <CategoryCard
+                          item={item}
+                          key={item.id}
+                          id={item.id}
+                          updateCategory={updateCategory}
+                        />
+                      </div>
+                    );
+                  })}
+                </AccordionDetails>
+              </Accordion>
             </div>
           );
-        }
-      })}
+        })}
+
       <Button
         variant="contained"
         color="default"

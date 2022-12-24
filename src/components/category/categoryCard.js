@@ -8,7 +8,7 @@ import Card from "../UI/card";
 import Label from "../UI/label";
 import EditCatgory from "./editCategory";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   name: {
     marginLeft: "10px",
     display: "flex",
@@ -32,7 +32,8 @@ const useStyles = makeStyles({
   subCategory: {
     margin: "4px",
   },
-});
+  // delete after
+}));
 
 const CategoryCard = (props) => {
   const categoryItemsStyle = useStyles();
