@@ -19,9 +19,9 @@ function LoginBox(props) {
   const [email, setEmail] = useState(userAttribute);
   const [password, setPassword] = useState(userAttribute);
 
-  const handleAuthResponse = (res) => {
-    props.googleLogin(res);
-  };
+  // const handleAuthResponse = (res) => {
+  //   props.googleLogin(res);
+  // };
 
   const loginFormSubmit = (event) => {
     event.preventDefault();

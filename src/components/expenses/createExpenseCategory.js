@@ -6,11 +6,11 @@ import Card from "../UI/card";
 import DialogBox from "../UI/dialogbox";
 import InputField from "../UI/inputfield";
 
-const attribute = {
-  value: "",
-  validation: "",
-  error: false,
-};
+// const attribute = {
+//   value: "",
+//   validation: "",
+//   error: false,
+// };
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateExpenseCategory = (props) => {
   const classes = useStyles();
-  const [categories, setCategories] = useState();
-  const [eCategory, setECategory] = useState();
+  // const [categories, setCategories] = useState();
+  // const [eCategory, setECategory] = useState();
   const [errors, setErrors] = useState([]);
   const [isExistingSubCategory, setIsExistingSubCategory] = useState(false);
 
@@ -49,10 +49,10 @@ const CreateExpenseCategory = (props) => {
     error: false,
   });
 
-  const [category, setCategory] = useState();
+  // const [category, setCategory] = useState();
 
   const handleClose = () => {
-    setECategory(attribute);
+    // setECategory(attribute);
     props.closeDialog();
   };
 
@@ -181,7 +181,7 @@ const CreateExpenseCategory = (props) => {
         console.log(res);
 
         if (res.status === 200) {
-          setCategories(res.data);
+          // setCategories(res.data);
         }
       })
       .catch((error) => {

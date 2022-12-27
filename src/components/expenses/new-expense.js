@@ -8,7 +8,7 @@ import {
   Select,
   Typography,
 } from "@material-ui/core";
-import { Add, AddBox, AddCircle } from "@material-ui/icons";
+import { Add, AddCircle } from "@material-ui/icons";
 import CategoryBudgetService from "../../services/catgoryService";
 import { trackPromise } from "react-promise-tracker";
 import Label from "../UI/label";

@@ -41,9 +41,9 @@ function Register() {
     }
   }, []);
 
-  const handleAuthResponse = (res) => {
-    console.log("[Auth response]", res);
-  };
+  // const handleAuthResponse = (res) => {
+  //   console.log("[Auth response]", res);
+  // };
 
   const loginFormSubmit = (event) => {
     setResponse("");

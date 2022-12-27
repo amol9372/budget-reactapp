@@ -1,7 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
-import { Badge } from "react-bootstrap";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import Card from "../UI/card";
@@ -83,17 +82,6 @@ const CategoryCard = (props) => {
       used = -props.item.used;
     }
     return <Label color={color}>${used}</Label>;
-  };
-
-  const getBadgeColor = () => {
-    if (
-      props.item.subCategory === null ||
-      props.item.subCategory === undefined
-    ) {
-      return "blue";
-    } else {
-      return "grey";
-    }
   };
 
   return (

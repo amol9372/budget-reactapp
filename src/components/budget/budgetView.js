@@ -56,19 +56,6 @@ const BudgetView = () => {
     // history.replace({ pathname: "/budgetview", state: budgetData });
   };
 
-  const budgetColor = () => {
-    console.log("[Current Budget] ::: ", budgetData.current);
-    if (budgetData.current < 0) {
-      setBudgetData((prevBudget) => ({
-        ...prevBudget,
-        current: -budgetData.current,
-      }));
-
-      return "red";
-    }
-    return "lightgreen";
-  };
-
   const currentBudget = () => {
     var color, current;
 

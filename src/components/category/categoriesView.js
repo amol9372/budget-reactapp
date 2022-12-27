@@ -5,7 +5,6 @@ import { trackPromise } from "react-promise-tracker";
 import { useHistory } from "react-router-dom";
 import CategoryBudgetService from "../../services/catgoryService";
 import CardBox from "../UI/cardbox";
-import Label from "../UI/label";
 import AddCategory from "./addCategory";
 import CategoryCard from "./categoryCard";
 import { isMobile } from "react-device-detect";
@@ -151,7 +150,7 @@ const CategoryView = (props) => {
         </Typography>
       </div> */}
 
-      {categories.length > 1 &&
+      {categories.length &&
         categories.map((cat) => {
           const sub = cat.subCategory;
           const categoryBudgets = cat.categoryBudgets;

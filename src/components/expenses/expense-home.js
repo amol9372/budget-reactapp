@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { trackPromise } from "react-promise-tracker";
-import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import ExpenseService from "../../services/expenseService";
 import HeaderBar from "../header/appBar";
@@ -8,7 +7,6 @@ import Expenses from "./expenses";
 import NewExpense from "./new-expense";
 
 const ExpenseHome = () => {
-  const history = useHistory();
   const [authRequired, setAuthRequired] = useState(false);
   const [expenses, setExpenses] = useState([
     // {

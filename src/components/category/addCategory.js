@@ -5,7 +5,7 @@ import {
   makeStyles,
   Select,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { trackPromise } from "react-promise-tracker";
 import CategoryBudgetService from "../../services/catgoryService";
 import Card from "../UI/card";
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const AddCategory = (props) => {
   const classes = useStyles();
   const [bcategory, setBCategory] = useState();
+  const [categories, setCategories] = useState();
   const [errors, setErrors] = useState([]);
   const [name, setName] = useState({
     value: "",
@@ -56,42 +57,63 @@ const AddCategory = (props) => {
     props.closeDialog();
   };
 
+  useEffect(() => {
+    // navigator.geolocation.getCurrentPosition();
+    getCategories();
+  }, []);
+
+  const getCategories = () => {
+    const response = trackPromise(CategoryBudgetService.getBudgetCategories());
+
+    response
+      .then((res) => {
+        console.log(res);
+
+        if (res.status === 200) {
+          setCategories(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const bcategoryNameChangeHandler = (event) => {
     const input = event.target.value;
 
-    var existingCategoriesLowerCase = props.existingCategories.map((item) =>
-      item.toLowerCase()
-    );
-    if (
-      existingCategoriesLowerCase &&
-      existingCategoriesLowerCase.includes(input.trim().toLowerCase())
-    ) {
-      name.error = true;
-      name.validation = "Category name already exists";
-      name.value = input;
-      setName((prevName) => ({
-        ...prevName,
-        error: true,
-        validation: "Category name already exists",
-        value: input,
-      }));
+    // var existingCategoriesLowerCase = props.existingCategories.map((item) =>
+    //   item.toLowerCase()
+    // );
+    // if (
+    //   existingCategoriesLowerCase &&
+    //   existingCategoriesLowerCase.includes(input.trim().toLowerCase())
+    // ) {
+    //   name.error = true;
+    //   name.validation = "Category name already exists";
+    //   name.value = input;
+    //   setName((prevName) => ({
+    //     ...prevName,
+    //     error: true,
+    //     validation: "Category name already exists",
+    //     value: input,
+    //   }));
 
-      setErrors((prevErrors) => [
-        ...prevErrors,
-        { field: "Category Name", message: "Already exists" },
-      ]);
+    //   setErrors((prevErrors) => [
+    //     ...prevErrors,
+    //     { field: "Category Name", message: "Already exists" },
+    //   ]);
 
-      return;
-    }
+    //   return;
+    // }
 
-    const errorClone = [];
-    errors.forEach((error) => {
-      if (error.field !== "Category Name") {
-        errorClone.push(error);
-      }
-    });
+    // const errorClone = [];
+    // errors.forEach((error) => {
+    //   if (error.field !== "Category Name") {
+    //     errorClone.push(error);
+    //   }
+    // });
 
-    setErrors(errorClone);
+    // setErrors(errorClone);
 
     setName((prevName) => ({
       ...prevName,
@@ -122,7 +144,7 @@ const AddCategory = (props) => {
   };
 
   const handleAutoDetect = (event) => {
-    const input = event.target.value;
+    // const input = event.target.value;
 
     setAutoDeduct((prevbCategory) => ({
       ...prevbCategory,
@@ -201,10 +223,15 @@ const AddCategory = (props) => {
             }}
           >
             <option aria-label="None" value="" />
+            {categories &&
+              categories.map((cat) => {
+                <option value={cat.subCategory}>{cat.subCategory}</option>;
+              })}
+            {/* <option aria-label="None" value="" />
             <option value={"general"}>General</option>
             <option value={"groceries"}>Groceries</option>
             <option value={"electronics"}>Electronics</option>
-            <option value={"sports"}>Sports</option>
+            <option value={"sports"}>Sports</option> */}
           </Select>
         </FormControl>
         <InputField
