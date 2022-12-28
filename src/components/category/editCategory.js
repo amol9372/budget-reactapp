@@ -6,9 +6,12 @@ import Card from "../UI/card";
 import DialogBox from "../UI/dialogbox";
 import InputField from "../UI/inputfield";
 import { toast } from "react-toastify";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const EditCatgory = (props) => {
   const [bcategory, setBCategory] = useState(props.category);
+  const [startDate, setStartDate] = useState(new Date());
 
   const handleClose = () => {
     setBCategory(props.category);
@@ -56,7 +59,7 @@ const EditCatgory = (props) => {
 
     response.then((res) => {
       if (res.status === 200) {
-        props.updateCategoriesOnSuccess(null);
+        props.deleteCategoryOnSuccess(null);
       } else {
         console.log("Error while deleting Budget category ::: ", res.message);
       }
@@ -106,6 +109,15 @@ const EditCatgory = (props) => {
           labelPlacement="end"
           //disabled={true}
         />
+        <div hidden={!bcategory.autoDeduct}>
+          <DatePicker
+            // startDate={Date.now()}
+            hidden={!bcategory.autoDeduct}
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+          />
+        </div>
+
         <FormControlLabel
           value="userDefined"
           control={

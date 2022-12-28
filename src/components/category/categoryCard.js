@@ -1,7 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
-import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+// import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { isMobile } from "react-device-detect";
 import Card from "../UI/card";
@@ -169,6 +169,9 @@ const CategoryCard = (props) => {
         open={dialogOpen}
         closeDialog={closeDialog}
         // existingCategories={categories.map((cat) => cat.name)}
+        deleteCategoryOnSuccess={(cat) => {
+          props.deleteCategory(cat);
+        }}
         updateCategoriesOnSuccess={(cat) => {
           props.updateCategory(cat);
           setDialogOpen(false);

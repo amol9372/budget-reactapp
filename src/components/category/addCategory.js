@@ -11,6 +11,8 @@ import CategoryBudgetService from "../../services/catgoryService";
 import Card from "../UI/card";
 import DialogBox from "../UI/dialogbox";
 import InputField from "../UI/inputfield";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const attribute = {
   value: "",
@@ -31,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddCategory = (props) => {
+  const [categoryMap, setCategoryMap] = useState(new Map());
   const classes = useStyles();
   const [bcategory, setBCategory] = useState();
-  const [categories, setCategories] = useState();
   const [errors, setErrors] = useState([]);
   const [name, setName] = useState({
     value: "",
@@ -50,70 +52,79 @@ const AddCategory = (props) => {
     validation: "",
     error: false,
   });
+
+  const [autoDeductOn, setAutoDeductOn] = useState({
+    value: new Date(),
+    validation: "",
+    error: false,
+  });
+
   const [category, setCategory] = useState();
+  const [hideAutoDeductDate, setHideAutoDeductDate] = useState(true);
 
   const handleClose = () => {
-    setBCategory(attribute);
+    setCategory("");
+    setAutoDeductOn({
+      value: new Date(),
+      validation: "",
+      error: false,
+    });
+    setAllocated({
+      value: 0,
+      validation: "",
+      error: false,
+    });
+    setName({
+      value: "",
+      validation: "",
+      error: false,
+    });
+    setHideAutoDeductDate(true);
     props.closeDialog();
-  };
-
-  useEffect(() => {
-    // navigator.geolocation.getCurrentPosition();
-    getCategories();
-  }, []);
-
-  const getCategories = () => {
-    const response = trackPromise(CategoryBudgetService.getBudgetCategories());
-
-    response
-      .then((res) => {
-        console.log(res);
-
-        if (res.status === 200) {
-          setCategories(res.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const bcategoryNameChangeHandler = (event) => {
     const input = event.target.value;
+    /* TO-DO  */
 
-    // var existingCategoriesLowerCase = props.existingCategories.map((item) =>
-    //   item.toLowerCase()
-    // );
-    // if (
-    //   existingCategoriesLowerCase &&
-    //   existingCategoriesLowerCase.includes(input.trim().toLowerCase())
-    // ) {
-    //   name.error = true;
-    //   name.validation = "Category name already exists";
-    //   name.value = input;
-    //   setName((prevName) => ({
-    //     ...prevName,
-    //     error: true,
-    //     validation: "Category name already exists",
-    //     value: input,
-    //   }));
+    if (categoryMap.size === 0) {
+      props.existingCategories.forEach((cat) => {
+        categoryMap.set(cat.subCategory, cat.categoryBudgets);
+      });
+    }
 
-    //   setErrors((prevErrors) => [
-    //     ...prevErrors,
-    //     { field: "Category Name", message: "Already exists" },
-    //   ]);
+    if (categoryMap.has(category)) {
+      const budgetCategories = categoryMap
+        .get(category)
+        .map((budgetCat) => budgetCat.name.toLowerCase());
+      if (budgetCategories.includes(input.trim().toLowerCase())) {
+        name.error = true;
+        name.validation = "Category name already exists";
+        name.value = input;
+        setName((prevName) => ({
+          ...prevName,
+          error: true,
+          validation: "Category name already exists",
+          value: input,
+        }));
 
-    //   return;
-    // }
+        setErrors((prevErrors) => [
+          ...prevErrors,
+          { field: "Category Name", message: "Already exists" },
+        ]);
 
-    // const errorClone = [];
-    // errors.forEach((error) => {
-    //   if (error.field !== "Category Name") {
-    //     errorClone.push(error);
-    //   }
-    // });
+        return;
+      }
+    }
 
-    // setErrors(errorClone);
+    const errorClone = [];
+    errors.forEach((error) => {
+      if (error.field !== "Category Name") {
+        errorClone.push(error);
+      }
+    });
+
+    setErrors(errorClone);
 
     setName((prevName) => ({
       ...prevName,
@@ -126,15 +137,6 @@ const AddCategory = (props) => {
   const bcategoryAllocationChangeHandler = (event) => {
     const input = event.target.value;
 
-    // if (input < 0) {
-    //   setErrors((prevErrors) => [
-    //     ...prevErrors,
-    //     { field: "Allocated", message: "Cannot be negative" },
-    //   ]);
-
-    //   return;
-    // }
-
     setAllocated((prevAllocation) => ({
       ...prevAllocation,
       value: input,
@@ -144,14 +146,14 @@ const AddCategory = (props) => {
   };
 
   const handleAutoDetect = (event) => {
-    // const input = event.target.value;
-
-    setAutoDeduct((prevbCategory) => ({
-      ...prevbCategory,
-      autoDeduct: !prevbCategory.autoDeduct,
+    setAutoDeduct((prev) => ({
+      ...prev,
+      value: !prev.value,
       error: false,
       validation: "",
     }));
+
+    setHideAutoDeductDate((prev) => !prev);
   };
 
   const handleCategory = (event) => {
@@ -174,6 +176,7 @@ const AddCategory = (props) => {
       userDefined: true,
       used: 0,
       autoDeduct: autoDeduct.value,
+      autoDeductionOn: autoDeductOn.value,
     };
 
     console.log("[Add Category form submit]", body);
@@ -182,11 +185,9 @@ const AddCategory = (props) => {
     response.then((res) => {
       if (res.status === 200 || res.status === 201) {
         // bcategory.id = res.data.id;
-        setBCategory(body);
+        props.updateCategoriesOnSuccess(res.data);
       }
     });
-
-    props.updateCategoriesOnSuccess(bcategory);
   };
 
   return (
@@ -223,15 +224,12 @@ const AddCategory = (props) => {
             }}
           >
             <option aria-label="None" value="" />
-            {categories &&
-              categories.map((cat) => {
-                <option value={cat.subCategory}>{cat.subCategory}</option>;
+            {props.existingCategories &&
+              props.existingCategories.map((cat) => {
+                return (
+                  <option value={cat.subCategory}>{cat.subCategory}</option>
+                );
               })}
-            {/* <option aria-label="None" value="" />
-            <option value={"general"}>General</option>
-            <option value={"groceries"}>Groceries</option>
-            <option value={"electronics"}>Electronics</option>
-            <option value={"sports"}>Sports</option> */}
           </Select>
         </FormControl>
         <InputField
@@ -256,6 +254,17 @@ const AddCategory = (props) => {
           label="Auto Deduct"
           labelPlacement="start"
         />
+        <div hidden={hideAutoDeductDate}>
+          <DatePicker
+            startDate={Date.now()}
+            minDate={new Date()}
+            maxDate={new Date(new Date().setMonth(new Date().getMonth() + 1))}
+            selected={autoDeductOn.value}
+            onChange={(date) =>
+              setAutoDeductOn((prev) => ({ ...prev, value: date }))
+            }
+          />
+        </div>
         <FormControlLabel
           value="userDefined"
           control={

@@ -117,6 +117,11 @@ const CategoryView = (props) => {
     history.go();
   };
 
+  const deleteCategory = (bcategory) => {
+    setDialogOpen(false);
+    history.go();
+  };
+
   const cardboxWidth = () => {
     if (isMobile) {
       return "100%";
@@ -182,6 +187,7 @@ const CategoryView = (props) => {
                           key={item.id}
                           id={item.id}
                           updateCategory={updateCategory}
+                          deleteCategory={deleteCategory}
                         />
                       </div>
                     );
@@ -206,7 +212,7 @@ const CategoryView = (props) => {
         // category={item}
         open={dialogOpen}
         closeDialog={closeDialog}
-        existingCategories={categories.map((cat) => cat.name)}
+        existingCategories={categories}
         updateCategoriesOnSuccess={addCategory}
       />
     </CardBox>
