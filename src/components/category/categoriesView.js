@@ -161,7 +161,7 @@ const CategoryView = (props) => {
                 style={{ background: "rgb(48, 47, 47)", color: "white" }}
               >
                 <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
+                  expandIcon={<ExpandMoreIcon color="error" />}
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >

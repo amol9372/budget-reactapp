@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { isMobile } from "react-device-detect";
 import Card from "../UI/card";
 import Label from "../UI/label";
 import EditCatgory from "./editCategory";
@@ -98,7 +99,7 @@ const CategoryCard = (props) => {
         bgcolor={bg}
       >
         <div className={categoryItemsStyle.name}>
-          <Typography variant="h6">
+          <Typography variant="h7">
             <Label color="white">{props.item.name}</Label>
           </Typography>
         </div>
@@ -132,13 +133,15 @@ const CategoryCard = (props) => {
             </Label>
           </Typography>
         </div>
-        <div className={categoryItemsStyle.alloacted}>
+
+        <div className={categoryItemsStyle.allocated}>
           <Typography variant="caption">
             <Label color="rgb(112, 119, 199)">Available</Label>
           </Typography>
           <Typography variant="subtitle1">{getAvailableLabel()}</Typography>
         </div>
-        <div className={categoryItemsStyle.circularProgressbar}>
+
+        {/* <div className={categoryItemsStyle.circularProgressbar}>
           <CircularProgressbar
             value={progress()}
             text={`${progress()}%`}
@@ -149,7 +152,17 @@ const CategoryCard = (props) => {
               textColor: "white",
             })}
           />
-        </div>
+        </div> */}
+        {!isMobile && (
+          <div className={categoryItemsStyle.alloacted}>
+            <Typography variant="inherit">
+              <Label color="white">
+                Spent {props.item.allocated - props.item.used} out of{" "}
+                {props.item.allocated}
+              </Label>
+            </Typography>
+          </div>
+        )}
       </Card>
       <EditCatgory
         category={props.item}
