@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// import { initFirebaseConfig } from "./push-notification.js";
-// import serviceWorker from "./service-worker.js";
 
 ReactDOM.render(
   <React.StrictMode>
