@@ -148,22 +148,22 @@ const HeaderBar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+      </MenuItem> */}
+      {/* <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -212,6 +212,7 @@ const HeaderBar = () => {
             color="inherit"
             className={classes.button}
             href="/home"
+            style={{ padding: "3px" }}
           >
             Home
           </Button>
@@ -221,9 +222,21 @@ const HeaderBar = () => {
             color="inherit"
             className={classes.button}
             href="/expenses"
+            style={{ padding: "3px" }}
           >
-            Expenses
+            Expense
           </Button>
+          {currentBudget() && (
+            <Button
+              variant="contained"
+              color="inherit"
+              className={classes.button}
+              href="/budgetview"
+              style={{ padding: "3px" }}
+            >
+              {currentBudget()}
+            </Button>
+          )}
           {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -249,16 +262,6 @@ const HeaderBar = () => {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            {currentBudget() && (
-              <Button
-                variant="contained"
-                color="inherit"
-                className={classes.button}
-                href="/budgetview"
-              >
-                {currentBudget()}
-              </Button>
-            )}
             <IconButton
               edge="end"
               aria-label="account of current user"

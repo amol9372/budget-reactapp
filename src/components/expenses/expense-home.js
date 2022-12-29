@@ -37,7 +37,8 @@ const ExpenseHome = () => {
 
         if (res.status === 200) {
           if (res.data.length > 0) {
-            setExpenses(res.data);
+            // setExpenses([]);
+            setExpenses(() => res.data);
           }
         }
       })
@@ -54,8 +55,16 @@ const ExpenseHome = () => {
         console.log(res);
 
         if (res.status === 200 || res.status === 201) {
-          setExpenses([]);
-          getExpenses();
+          const expensesClone = [];
+
+          expenses.map((item) => {
+            expensesClone.push({ ...item });
+          });
+
+          expensesClone.push(expense);
+          setExpenses(expensesClone);
+
+          // getExpenses();
         }
       })
       .catch((error) => {

@@ -8,6 +8,7 @@ import InputField from "../UI/inputfield";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Label from "../UI/label";
 
 const EditCatgory = (props) => {
   const [bcategory, setBCategory] = useState(props.category);
@@ -110,12 +111,13 @@ const EditCatgory = (props) => {
           //disabled={true}
         />
         <div hidden={!bcategory.autoDeduct}>
-          <DatePicker
-            // startDate={Date.now()}
+          <Label color="white">{bcategory.autoDeductOn}</Label>
+          {/* <DatePicker
+            startDate={Date.now()}
             hidden={!bcategory.autoDeduct}
-            selected={startDate}
+            selected={bcategory.autoDeductOn}
             onChange={(date) => setStartDate(date)}
-          />
+          /> */}
         </div>
 
         <FormControlLabel
